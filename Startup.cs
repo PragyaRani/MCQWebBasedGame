@@ -2,6 +2,7 @@ using MCQPuzzleGame.Context;
 using MCQPuzzleGame.Exception;
 using MCQPuzzleGame.Helpers;
 using MCQPuzzleGame.Repositiories;
+using MCQPuzzleGame.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -38,8 +39,11 @@ namespace MCQPuzzleGame
             var connectstring = Configuration.GetConnectionString("Server");
             //EntityFramework
             services.AddDbContext<DbStoreContext>(options => options.UseSqlServer(connectstring));
-            services.AddControllers();
+            services.AddCors();
+            services.AddControllers(option => option.Filters.Add(new LogAttribute()));// Add filter at global level
+            services.AddControllers().AddJsonOptions(x=> x.JsonSerializerOptions.IgnoreNullValues = true);
             services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<IUserService, UserService>();
             services.AddTransient<IJwtHelper, JwtHelpers>();
             services.AddTransient<IMcqQuestionRepo, McqQuestionsRepo>();
             //services.AddScoped<AuthCustomHandler>();
@@ -50,15 +54,23 @@ namespace MCQPuzzleGame
             }).AddJwtBearer(o =>
             {
                 var key = Encoding.UTF8.GetBytes(Configuration["JWT:key"]);
+                o.RequireHttpsMetadata = false;
                 o.SaveToken = true;
                 o.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(key),
                     ValidateIssuer = false,
-                    ValidateAudience = false
+                    ValidateAudience = false,
+                    //set clockskew to zero so token  expire exactly at token
+                    //expiration time (instead of five minutes later)
+                    ClockSkew = TimeSpan.Zero
                 };
             });
+            
+            //services.AddCors(options =>
+            //options.AddDefaultPolicy(policy => policy.AllowAnyOrigin().
+            //AllowAnyHeader().AllowAnyMethod()));
             
             services.AddSwaggerGen(c =>
             {
@@ -76,9 +88,12 @@ namespace MCQPuzzleGame
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "MCQPuzzleGame v1"));
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             app.UseRouting();
+            
+            app.UseCors(x => x.SetIsOriginAllowed(origin => true).AllowAnyMethod().AllowAnyHeader()
+            .AllowCredentials());
             app.UseAuthentication();
             app.UseAuthorization();
 

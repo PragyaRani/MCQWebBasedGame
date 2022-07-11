@@ -25,20 +25,20 @@ namespace MCQPuzzleGame.Repositiories
                 Email = user.Email,
                 Password = PasswordHash.Hash(user.Password),
                 UserRole = user.UserRole
-        };
-            dbStoreContext.Users.Add(userData);
+            };
+            dbStoreContext.UserInfo.Add(userData);
             await dbStoreContext.SaveChangesAsync();
             return userData.Id;
         }
 
         public async Task<Users> GetUserById(string Email)
         {
-            return await dbStoreContext.Users.FindAsync(Email);
+            return await dbStoreContext.UserInfo.FindAsync(Email);
         }
 
         public async Task<Users> VerifyUser(LoginUser user)
         {
-            var userdata =  dbStoreContext.Users.Where(x => x.Email == user.Email)
+            var userdata =  dbStoreContext.UserInfo.Where(x => x.Email == user.Email)
                 .FirstOrDefault();
             if (userdata != null)
             { 
@@ -48,9 +48,13 @@ namespace MCQPuzzleGame.Repositiories
 
         }
 
-        public async Task<string> sendToken(Users user)
+        public string GenerateUserToken(Users user)
         {
-            return await jwtHelper.GenerateTokens(user);
+            return jwtHelper.GenerateTokens(user);
+        }
+        public RefreshTokens RefreshUserToken(string ipAddress)
+        {
+            return jwtHelper.GenerateRefreshToken(ipAddress);
         }
     }
 }

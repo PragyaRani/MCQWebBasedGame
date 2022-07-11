@@ -5,7 +5,7 @@ namespace MCQPuzzleGame.Helpers
 {
     public interface IJwtHelper
     {
-      Task<string> GenerateTokens(Users user);
-
+      string GenerateTokens(Users user);
+       RefreshTokens GenerateRefreshToken(string ipAddress);
     }
 }

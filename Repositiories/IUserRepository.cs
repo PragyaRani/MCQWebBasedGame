@@ -8,6 +8,7 @@ namespace MCQPuzzleGame.Repositiories
         Task<int> AddUser(RegisterUser user);
         Task<Users> GetUserById(string Email);
         Task<Users> VerifyUser(LoginUser user);
-        Task<string> sendToken(Users user);
+        string GenerateUserToken(Users user);
+        RefreshTokens RefreshUserToken(string ipAddress);
     }
 }

@@ -1,12 +1,11 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
-using System.Threading.Tasks;
 using System.Text;
-using System.Configuration;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using MCQPuzzleGame.Model;
 using System;
+using System.Security.Cryptography;
 
 namespace MCQPuzzleGame.Helpers
 {
@@ -17,7 +16,7 @@ namespace MCQPuzzleGame.Helpers
         {
             _config = config;
         }
-        public async Task<string> GenerateTokens(Users user)
+        public string GenerateTokens(Users user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.UTF8.GetBytes(_config["JWT:key"]);
@@ -27,16 +26,32 @@ namespace MCQPuzzleGame.Helpers
                 {
                     new Claim("Id", Guid.NewGuid().ToString()),
                     new Claim(ClaimTypes.Email,user.Email),
-                    new Claim(ClaimTypes.Role, user.UserRole),
+                    new Claim(ClaimTypes.Role, user.UserRole ?? "user"),
                     new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                    new Claim(ClaimTypes.Expiration, DateTime.UtcNow.AddMinutes(60).ToString())
+                    new Claim(ClaimTypes.Expiration, DateTime.UtcNow.AddMinutes(15).ToString())
                 }),
+                Expires = DateTime.UtcNow.AddMinutes(15),
                 SigningCredentials = new SigningCredentials(
                     new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
             var token = tokenHandler.CreateToken(tokenDesc);
             return tokenHandler.WriteToken(token);
            
+        }
+        public RefreshTokens GenerateRefreshToken(string ipAddress)
+        {
+            using(var rngCryptoServiceProvider = new RNGCryptoServiceProvider())
+            {
+                var randombytes = new byte[64];
+                rngCryptoServiceProvider.GetBytes(randombytes);
+                return new RefreshTokens
+                {
+                    Token = Convert.ToBase64String(randombytes),
+                    Expires = DateTime.UtcNow.AddMinutes(7),
+                    Created = DateTime.UtcNow,
+                    CreatedByIp = ipAddress,
+                };
+            }
         }
     }
 }

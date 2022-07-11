@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 namespace MCQPuzzleGame.Model
 {
     public class McqQuestions
@@ -16,5 +17,13 @@ namespace MCQPuzzleGame.Model
         public string? Option4 { get; set; }
         [Required(ErrorMessage = "Answer is required")]
         public string Answer { get; set; }
+        public Image Image { get; set; }
+    }
+
+    public class Image
+    {
+        public int ImageId { get; set; }
+        public string ImageUrl { get; set; }
+        public IList<McqQuestions> McqQuestions { get; set; }
     }
 }

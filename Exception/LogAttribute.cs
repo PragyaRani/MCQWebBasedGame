@@ -1,18 +1,11 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Net.Http;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Web.Http;
-//using System.Web.Http.Controllers;
-//using System.Web.Http.Filters;
-using System.Net;
 using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace MCQPuzzleGame.Exception
 {
 
-    public class LogAttribute : Attribute,IActionFilter
+    public class LogAttribute :IActionFilter
     {
         public LogAttribute() { }
         public bool AllowMultiple => throw new NotImplementedException();

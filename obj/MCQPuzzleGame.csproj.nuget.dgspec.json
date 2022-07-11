@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Projects\\MCQPuzzleGame\\MCQPuzzleGame\\MCQPuzzleGame.csproj": {}
+    "D:\\Workspace\\Projects\\MCQPuzzleGame\\MCQPuzzleGame\\MCQPuzzleGame.csproj": {}
   },
   "projects": {
-    "D:\\Projects\\MCQPuzzleGame\\MCQPuzzleGame\\MCQPuzzleGame.csproj": {
+    "D:\\Workspace\\Projects\\MCQPuzzleGame\\MCQPuzzleGame\\MCQPuzzleGame.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Projects\\MCQPuzzleGame\\MCQPuzzleGame\\MCQPuzzleGame.csproj",
+        "projectUniqueName": "D:\\Workspace\\Projects\\MCQPuzzleGame\\MCQPuzzleGame\\MCQPuzzleGame.csproj",
         "projectName": "MCQPuzzleGame",
-        "projectPath": "D:\\Projects\\MCQPuzzleGame\\MCQPuzzleGame\\MCQPuzzleGame.csproj",
+        "projectPath": "D:\\Workspace\\Projects\\MCQPuzzleGame\\MCQPuzzleGame\\MCQPuzzleGame.csproj",
         "packagesPath": "C:\\Users\\Pragya\\.nuget\\packages\\",
-        "outputPath": "D:\\Projects\\MCQPuzzleGame\\MCQPuzzleGame\\obj\\",
+        "outputPath": "D:\\Workspace\\Projects\\MCQPuzzleGame\\MCQPuzzleGame\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -48,9 +48,9 @@
               "target": "Package",
               "version": "[5.0.0, )"
             },
-            "Microsoft.AspNet.WebApi.Core": {
+            "EntityFramework": {
               "target": "Package",
-              "version": "[5.2.8, )"
+              "version": "[6.4.4, )"
             },
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",

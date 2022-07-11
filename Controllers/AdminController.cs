@@ -9,7 +9,7 @@ namespace MCQPuzzleGame.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "Admin")]
     public class AdminController : ControllerBase
     {
         private readonly IMcqQuestionRepo mcqQuestion;
@@ -22,7 +22,9 @@ namespace MCQPuzzleGame.Controllers
         {
             int val = await mcqQuestion.AddQuestion(questions);
 
-            return val == 1 ? Ok() : Ok("SOmething wrong with server");
+
+            return val == 1 ? Ok() : Ok("Something wrong with server");
+            
         }
 
 
